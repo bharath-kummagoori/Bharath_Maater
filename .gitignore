@@ -1,4 +1,5 @@
 __pycache__/
 *.pyc
 downloads/
+test_downloads/
 *.egg-info/
