@@ -217,10 +217,29 @@ def _print_report(
         logger.info(f"Total size:         {dl_summary['total_size_mb']} MB")
         logger.info(f"Output directory:   {output_dir}")
 
+    # Per-package details with download links
+    logger.info(f"\n{'─' * 60}")
+    logger.info("PACKAGE DETAILS")
+    logger.info(f"{'─' * 60}")
+    for i, r in enumerate(results, 1):
+        status_icon = "OK" if r.get("downloaded") or dry_run and r.get("url") else "FAILED"
+        logger.info(
+            f"\n  [{i}] {r['name']}@{r['version']}"
+        )
+        logger.info(f"      Ecosystem : {r.get('ecosystem') or 'unknown'}")
+        logger.info(f"      Method    : {r.get('method') or 'none'}")
+        logger.info(f"      URL       : {r.get('url') or 'N/A'}")
+        logger.info(f"      Status    : {status_icon}")
+        if r.get("error"):
+            logger.info(f"      Error     : {r['error']}")
+
     if failed:
-        logger.info(f"\nFailed ({len(failed)}):")
+        logger.info(f"\n{'─' * 60}")
+        logger.info(f"FAILED PACKAGES ({len(failed)}):")
+        logger.info(f"{'─' * 60}")
         for r in failed:
             logger.info(f"  - {r['name']}@{r['version']}: {r['error']}")
+            logger.info(f"    URL: {r.get('url') or 'N/A'}")
 
     logger.info(f"\nTime elapsed: {elapsed:.1f}s")
     logger.info(f"{'=' * 60}")
