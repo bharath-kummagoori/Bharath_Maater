@@ -3,4 +3,5 @@ __pycache__/
 downloads/
 test_downloads/
 test_downloads_v2/
+demo_output/
 *.egg-info/
